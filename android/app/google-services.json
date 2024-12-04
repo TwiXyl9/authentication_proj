@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "1022325094662",
+    "project_id": "authentication-proj-a6c88",
+    "storage_bucket": "authentication-proj-a6c88.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1022325094662:android:f0171152900ce705fe8687",
+        "android_client_info": {
+          "package_name": "com.example.authenticationProj"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1022325094662-dn1s4h9tlp1v21qr37nf3oh6v9q1f3gh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwHjTUX4nOqEcXZgfmy0EQv2LCYT4ZSCo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1022325094662-dn1s4h9tlp1v21qr37nf3oh6v9q1f3gh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1022325094662-q7q56hd6cbjg7rnj8bt4h4hresilli0m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.authenticationProj"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1022325094662:android:e5d69c8f59174338fe8687",
+        "android_client_info": {
+          "package_name": "com.example.authentication_proj"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1022325094662-nl5dj84f1bpulfomrmuh6ne22d5ojr2s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.authentication_proj",
+            "certificate_hash": "6fafb44be25a14e5ebfc55bebc30da9d7166f970"
+          }
+        },
+        {
+          "client_id": "1022325094662-dn1s4h9tlp1v21qr37nf3oh6v9q1f3gh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwHjTUX4nOqEcXZgfmy0EQv2LCYT4ZSCo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1022325094662-dn1s4h9tlp1v21qr37nf3oh6v9q1f3gh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1022325094662-q7q56hd6cbjg7rnj8bt4h4hresilli0m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.authenticationProj"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
