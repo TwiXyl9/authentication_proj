@@ -16,7 +16,6 @@ class AccountScreen extends ConsumerWidget {
 
     Future<void> signOut() async {
       await ref.read(authControllerProvider.notifier).signOut();
-      locator<NavigationHelper>().navigateTo(rootRoute);
     }
 
     return Scaffold(
@@ -28,7 +27,10 @@ class AccountScreen extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(user!.email.toString()),
+            Text(user!.email == null ?
+            user.providerData.first.email ?? 'Undefined email' :
+            user.email!
+            ),
              if (user.providerData[0].providerId == 'password') TextButton(
               onPressed: () => locator<NavigationHelper>().navigateTo(resetPasswordRoute),
               child: const Text('Reset password'),

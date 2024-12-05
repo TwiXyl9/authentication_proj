@@ -23,7 +23,7 @@ class NavigationHelper {
       GoRoute(path: registrationRoute, builder: ((context, state) => RegistrationScreen())),
       GoRoute(path: verifyEmailRoute, builder: ((context, state) => const VerifyEmailScreen())),
       GoRoute(path: accountRoute, builder: ((context, state) => const AccountScreen())),
-      GoRoute(path: resetPasswordRoute, builder: ((context, state) => const ResetPasswordScreen())),
+      GoRoute(path: resetPasswordRoute, builder: ((context, state) => ResetPasswordScreen())),
     ],
     redirect: (context, state) async {
       if (state.fullPath == accountRoute && FirebaseAuth.instance.currentUser == null) return rootRoute;

@@ -8,8 +8,10 @@ abstract class BaseAuthRepository {
   User? getCurrentUser();
   Future<void> signIn({required String email, required String password});
   Future<void> signInWithCredential({required OAuthCredential credential});
+  Future<void> signInWithProvider({required AuthProvider provider});
   Future<void> signUp({required String email, required String password});
   Future<void> signOut();
+  Future<void> resetPassword({required String email});
 }
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) => AuthRepository(ref));
@@ -55,6 +57,15 @@ class AuthRepository implements BaseAuthRepository {
   }
 
   @override
+  Future<void> signInWithProvider({required AuthProvider provider}) async {
+    try {
+      await _ref.read(firebaseAuthProvider).signInWithProvider(provider);
+    } on FirebaseAuthException catch (e) {
+      throw CustomException(message: e.message);
+    }
+  }
+
+  @override
   Future<void> signOut() async {
     try {
       await _ref.read(firebaseAuthProvider).signOut();
@@ -74,6 +85,15 @@ class AuthRepository implements BaseAuthRepository {
       if (user != null) {
         await user.sendEmailVerification();
       }
+    } on FirebaseAuthException catch (e) {
+      throw CustomException(message: e.message);
+    }
+  }
+
+  @override
+  Future<void> resetPassword({required String email}) async {
+    try {
+      await _ref.read(firebaseAuthProvider).sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
       throw CustomException(message: e.message);
     }

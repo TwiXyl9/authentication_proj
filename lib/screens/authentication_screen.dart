@@ -23,7 +23,7 @@ class AuthenticationScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    ref.listen<CustomException?>(registrationExceptionProvider, (previous, next) {
+    ref.listen<CustomException?>(authenticationExceptionProvider, (previous, next) {
       CustomSnackBar.showSnackBar(
         context,
         next!.message!,
@@ -37,7 +37,7 @@ class AuthenticationScreen extends ConsumerWidget {
             email: emailController.text.trim(),
             password: passwordController.text.trim()
         );
-        if (ref.read(registrationExceptionProvider.notifier).state == null) {
+        if (ref.read(authenticationExceptionProvider.notifier).state == null) {
           locator<NavigationHelper>().navigateTo(rootRoute);
         }
       }
@@ -111,7 +111,7 @@ class AuthenticationScreen extends ConsumerWidget {
                   Buttons.google,
                   onPressed: () async {
                     await ref.read(authControllerProvider.notifier).signInWithGoogle();
-                    if (ref.read(registrationExceptionProvider.notifier).state == null) {
+                    if (ref.read(authenticationExceptionProvider.notifier).state == null) {
                       locator<NavigationHelper>().navigateTo(rootRoute);
                     }
                   }
@@ -120,7 +120,16 @@ class AuthenticationScreen extends ConsumerWidget {
                   Buttons.facebook,
                   onPressed: () async {
                     await ref.read(authControllerProvider.notifier).signInWithFacebook();
-                    if (ref.read(registrationExceptionProvider.notifier).state == null) {
+                    if (ref.read(authenticationExceptionProvider.notifier).state == null) {
+                      locator<NavigationHelper>().navigateTo(rootRoute);
+                    }
+                  }
+              ),
+              SignInButton(
+                  Buttons.gitHub,
+                  onPressed: () async {
+                    await ref.read(authControllerProvider.notifier).signInWithGitHub();
+                    if (ref.read(authenticationExceptionProvider.notifier).state == null) {
                       locator<NavigationHelper>().navigateTo(rootRoute);
                     }
                   }

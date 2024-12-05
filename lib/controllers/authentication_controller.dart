@@ -13,6 +13,7 @@ import '../services/token_service.dart';
 
 final authenticationExceptionProvider = StateProvider<CustomException?>((_) => null);
 final registrationExceptionProvider = StateProvider<CustomException?>((_) => null);
+final resetPasswordExceptionProvider = StateProvider<CustomException?>((_) => null);
 
 final authControllerProvider = StateNotifierProvider<AuthController, User?>((ref) => AuthController(ref));
 
@@ -32,26 +33,25 @@ class AuthController extends StateNotifier<User?>{
     super.dispose();
   }
 
-  Future<void> signIn({
-    required String email,
-    required String password
-  }) async {
+  User? getCurrentUser() {
+    try {
+      return _ref.read(authRepositoryProvider).getCurrentUser();
+    } on FirebaseAuthException catch (e) {
+      throw CustomException(message: e.message);
+    }
+  }
+
+  Future<void> signIn({ required String email, required String password}) async {
     try {
       await _ref.read(authRepositoryProvider).signIn(email: email, password: password);
     } on CustomException catch (e) {
-      _ref.read(registrationExceptionProvider.notifier).state = e;
+      _ref.read(authenticationExceptionProvider.notifier).state = e;
     }
   }
 
   Future<void> signInWithGoogle() async {
     try {
-      final googleSignIn = GoogleSignIn(
-        clientId: GoogleApiKeys.CLIENT_ID,
-        scopes: <String>[
-          'email',
-        ],
-      );
-      GoogleSignInAccount? googleAccount = await googleSignIn.signIn();
+      GoogleSignInAccount? googleAccount = await GoogleSignIn().signIn();
       GoogleSignInAuthentication? googleAuth = await googleAccount?.authentication;
       var credential = OAuthCredential(
         providerId: 'google.com',
@@ -93,6 +93,14 @@ class AuthController extends StateNotifier<User?>{
     }
   }
 
+  Future<void> signInWithGitHub() async {
+    try {
+      _ref.read(authRepositoryProvider).signInWithProvider(provider: GithubAuthProvider());
+    } on CustomException catch (e) {
+      _ref.read(authenticationExceptionProvider.notifier).state = e;
+    }
+  }
+
   Future<void> signUp({
     required String email,
     required String password
@@ -106,5 +114,13 @@ class AuthController extends StateNotifier<User?>{
 
   Future<void> signOut() async {
     await _ref.read(authRepositoryProvider).signOut();
+  }
+
+  Future<void> resetPassword({ required String email}) async {
+    try {
+      await _ref.read(authRepositoryProvider).resetPassword(email: email);
+    } on CustomException catch (e) {
+      _ref.read(resetPasswordExceptionProvider.notifier).state = e;
+    }
   }
 }

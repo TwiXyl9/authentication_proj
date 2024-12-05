@@ -1,60 +1,51 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../controllers/authentication_controller.dart';
 import '../helpers/navigation_helper.dart';
 import '../locator.dart';
+import '../models/custom_exception.dart';
 import '../routes_names.dart';
 import '../widgets/custom_snackbar.dart';
 import '../widgets/custom_text_field.dart';
 
-class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({super.key});
-
-  @override
-  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
-}
-
-class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
-  TextEditingController emailController = TextEditingController();
+class ResetPasswordScreen extends ConsumerWidget {
+  final TextEditingController emailController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
+  ResetPasswordScreen({super.key});
+
+
   @override
-  void dispose() {
-    emailController.dispose();
+  Widget build(BuildContext context, WidgetRef ref) {
 
-    super.dispose();
-  }
-
-  Future<void> resetPassword() async {
-
-    final scaffoldMassager = ScaffoldMessenger.of(context);
-
-    final isValid = formKey.currentState!.validate();
-    if (!isValid) return;
-
-    try {
-      await FirebaseAuth.instance
-          .sendPasswordResetEmail(email: emailController.text.trim());
-    } on FirebaseAuthException catch (e) {
+    ref.listen<CustomException?>(resetPasswordExceptionProvider, (previous, next) {
       CustomSnackBar.showSnackBar(
         context,
-        e.message!,
+        next!.message!,
         true,
       );
+    });
+
+    Future<void> resetPassword() async {
+      if (formKey.currentState!.validate()) {
+        await ref.read(authControllerProvider.notifier).resetPassword(
+            email: emailController.text.trim()
+        );
+        if (ref.read(resetPasswordExceptionProvider.notifier).state == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Password reset successful. Check your email'),
+                backgroundColor: Colors.green,
+              )
+          );
+          locator<NavigationHelper>().navigateTo(rootRoute);
+        }
+      }
     }
 
-    const snackBar = SnackBar(
-      content: Text('Password reset successful. Check your email'),
-      backgroundColor: Colors.green,
-    );
-
-    scaffoldMassager.showSnackBar(snackBar);
-    locator<NavigationHelper>().navigateTo(rootRoute);
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
